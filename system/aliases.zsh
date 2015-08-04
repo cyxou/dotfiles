@@ -10,4 +10,6 @@ then
 fi
 
 alias pbcopy='xsel --clipboard --input'
+alias pbc='xsel --clipboard --input'
 alias pbpaste='xsel --clipboard --output'
+alias pbp='xsel --clipboard --output'
