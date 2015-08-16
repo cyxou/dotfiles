@@ -41,8 +41,8 @@ set -g utf8
 set-window-option -g utf8 on
 
 # disable mouse control by default - change 'off' to 'on' to enable by default.
-setw -g mode-mouse on
-setw -g mouse-utf8 on
+setw -g mode-mouse off
+setw -g mouse-utf8 off 
 if-shell 'test "`tmux -V`" != "tmux 1.4"' 'set-option -g mouse-resize-pane on'
 set-option -g mouse-select-pane on
 if-shell 'test "`tmux -V`" != "tmux 1.4"' 'set-option -g mouse-select-window on'
