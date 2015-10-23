@@ -13,3 +13,8 @@ alias pbcopy='xsel --clipboard --input'
 alias pbc='xsel --clipboard --input'
 alias pbpaste='xsel --clipboard --output'
 alias pbp='xsel --clipboard --output'
+alias wfon='rfkill unblock 0 && echo wifi turned on'
+alias wfoff='rfkill block 0 && echo wifi turned off'
+
+alias mongostart='mongod --dbpath ~/data/db'
+alias twstart='teamviewer --daemon start $$ teamviewer'
