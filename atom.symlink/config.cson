@@ -1,10 +1,11 @@
 "*":
   editor:
     showIndentGuide: true
-    fontFamily: "Menlo"
+    fontFamily: "Ubuntu Mono"
     invisibles: {}
-    fontSize: 15
     softWrapAtPreferredLineLength: true
+    fontSize: 10
+    preferredLineLength: 100
   core:
     ignoredNames: [
       ".bundle"
@@ -14,16 +15,14 @@
       "tmp"
       "vendor"
     ]
-    themes: [
-      "unity-ui"
-      "glacier-syntax"
-    ]
     hideGitIgnoredFiles: true
     disabledPackages: [
       "background-tips"
       "exception-reporting"
       "metrics"
     ]
+    autoHideMenuBar: true
+    projectHome: "/home/alex/code"
   "spell-check":
     grammars: [
       "text.plain"
@@ -34,3 +33,17 @@
     showOnStartup: false
   "release-notes":
     viewedVersion: "0.89.0"
+  minimap:
+    plugins:
+      "highlight-selected": true
+  "one-dark-ui":
+    fontSize: 8
+    layoutMode: "Compact"
+  jshint:
+    validateOnlyOnSave: true
+  linter:
+    showErrorTabLine: true
+    showErrorPanel: false
+  "atom-beautify":
+    _analyticsUserId: "6300169d-c83f-4585-80a9-fde53a8f5b25"
+  "tree-view": {}
