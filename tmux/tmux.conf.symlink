@@ -90,5 +90,9 @@ bind r source-file ~/.tmux.conf \; display-message 'Reloaded ~/.tmux.conf!'
 setw -g monitor-activity on
 set -g visual-activity off
 
+# Do not confirm on killing window
+bind-key & kill-window \; display-message 'Window killied!'
+
+
 source-file ~/.dotfiles/tmux/statusline.conf
 
