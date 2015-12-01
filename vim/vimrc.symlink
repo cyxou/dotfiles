@@ -1,4 +1,11 @@
 set nocompatible              " be iMproved, required
+set clipboard=unnamed
+"set nobackup
+"set nowritebackup
+"set noswapfile
+set history=100
+set nowrap
+
 filetype off                  " required
 
 set modelines=1
@@ -13,6 +20,8 @@ Plugin 'VundleVim/Vundle.vim'
 " The following are examples of different formats supported.
 " Keep Plugin commands between vundle#begin/end.
 Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-surround'
+Plugin 'tpope/vim-unimpaired'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'pangloss/vim-javascript'
 Plugin 'bling/vim-airline'
@@ -21,6 +30,8 @@ Plugin 'stephenmckinney/vim-solarized-powerline'
 Plugin 'scrooloose/syntastic'
 Plugin 'shougo/neocomplete.vim'
 Plugin 'airblade/vim-gitgutter'
+Plugin 'edkolev/tmuxline.vim'
+Plugin 'elzr/vim-json'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -37,18 +48,24 @@ filetype indent plugin on
 "
 " see :h vundle for more details or wiki for FAQ
 " Put your non-Plugin stuff after this line
-
 syntax enable
+" set foldmethod=manual
 set background=dark
 colorscheme solarized
 
-:set number
+set number
+
+let mapleader = ","
+set ttimeoutlen=100
 
 " NerdTree style in Explorer mode
 let g:netrw_liststyle=3
 
 " Enable vim-airline
 let g:airline#extensions#tabline#enabled = 1
+
+" Enable tmux-airline
+let g:airline#extensions#tmuxline#enabled = 1
 
 let g:airline_powerline_fonts = 1
 let g:airline_section_b = '%{strftime("%c")}'
@@ -87,6 +104,7 @@ set hlsearch
 nnoremap <leader><space> :noh<cr>
 nnoremap <tab> %
 vnoremap <tab> %
+nnoremap <leader>l :set invlist<CR>
 
 " The next section makes Vim handle long lines correctly:
 set wrap
@@ -99,3 +117,98 @@ set tabstop=2
 set shiftwidth=2
 set softtabstop=2
 set expandtab
+
+" Highlight hidden characters
+set listchars=tab:>·,trail:·
+
+" Split settings
+set splitright 
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
+
+" CtrlP - files matched are ignored when expanding wildcards
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/node_modules/*
+let g:ctrlp_custom_ignore = {
+      \ 'dir': '\v[\/]\.(git|hg|svn)$',
+      \ 'file': '\v\.(exe|so|dll)$',
+      \ 'link': 'some_bad_symbolic_links',
+      \ }
+
+" Syntastic tweaking
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+set statusline+=%{fugitive#statusline()}
+
+let g:syntastic_javascript_checkers = ['eslint']
+let g:syntastic_always_populate_loc_list=1
+let g:syntastic_check_on_open=1
+
+" Explore tweaking
+" from http://ivanvbrennan.nyc/blog/2014/01/16/rigging-vims-netrw
+fun! VexToggle(dir)
+  if exists("t:vex_buf_nr")
+    call VexClose()
+  else
+    call VexOpen(a:dir)
+  endif
+endf
+
+fun! VexOpen(dir)
+  let g:netrw_browse_split=4 "Open files in previous window
+  let vex_width = 25
+
+  execute "Vexplore " . a:dir
+  let t:vex_buf_nr = bufnr("%")
+  wincmd H
+
+  call VexSize(vex_width)
+endf
+
+nnoremap <leader>` :call VexToggle("")<CR>
+
+fun! VexClose()
+  let cur_win_nr = winnr()
+  let target_nr = ( cur_win_nr == 1 ? winnr("#") : cur_win_nr )
+
+  1wincmd w
+  close
+  unlet t:vex_buf_nr
+
+  execute (target_nr - 1) . "wincmd w"
+  call NormalizeWidth()
+endf
+
+fun! VexSize(vex_width)
+  execute "vertical resize" . a:vex_width
+  set winfixwidth
+  call NormalizeWidth()
+endf
+
+fun! NormalizeWidth()
+  let eadir_pref = &eadirection
+  set eadirection=hor
+  set equalalways! equalalways!
+  let &eadirection = eadir_pref
+endf
+
+augroup NetrwGroup
+  autocmd! BufEnter * call NormalizeWidth()
+augroup END
+
+" Json highlighting
+au! BufRead,BufNewFile *.json set filetype=json
+au! BufRead,BufNewFile *.template set filetype=json
+let g:vim_json_syntax_conceal = 0
+
+augroup json_autocmd
+  autocmd!
+  autocmd FileType json set autoindent
+  autocmd FileType json set formatoptions=tcq2l
+  autocmd FileType json set textwidth=78 shiftwidth=2
+  autocmd FileType json set softtabstop=2 tabstop=8
+  autocmd FileType json set expandtab
+  "autocmd FileType json set foldmethod=syntax
+augroup END
