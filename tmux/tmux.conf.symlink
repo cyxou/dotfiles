@@ -5,9 +5,11 @@
 # Make clipboard work inside vim (OSX)
 if-shell 'test "$(uname)" = "Darwin"' 'set-option -g default-command "reattach-to-user-namespace -l $SHELL"'
 
-# Clipboard (OSX)
-if-shell 'test "$(uname)" = "Darwin"' 'bind C-c run "tmux save-buffer - | reattach-to-user-namespace pbcopy"'
-if-shell 'test "$(uname)" = "Darwin"' 'bind C-v run "reattach-to-user-namespace pbpaste | tmux load-buffer - && tmux paste-buffer"'
+# Clipboard (Linux)
+bind-key -t vi-copy 'v' begin-selection
+bind-key -t vi-copy 'y' copy-pipe "xclip"
+bind C-c run "tmux save-buffer - | xclip -i -sel clipboard"
+bind C-v run "tmux set-buffer \"$(xclip -o -sel clipboard)\"; tmux paste-buffer"
 
 # 0 is too far from ` ;)
 set-option -g base-index 1
@@ -35,10 +37,17 @@ setw -g mode-keys vi
 set -g utf8
 set-window-option -g utf8 on
 
+# Renumber windows automatically after removing a window
+set-option -g renumber-window on
+
 # bind-key Space choose-session
 
-bind-key | split-window -h
-bind-key - split-window -v
+unbind [
+bind-key Escape copy-mode
+
+# vim-like splitting of the window
+bind-key v split-window -h
+bind-key s split-window -v
 
 bind-key -r J resize-pane -D 5
 bind-key -r K resize-pane -U 5
@@ -49,6 +58,9 @@ bind-key M-j resize-pane -D
 bind-key M-k resize-pane -U
 bind-key M-h resize-pane -L
 bind-key M-l resize-pane -R
+
+bind-key = select-layout even-vertical
+bind-key | select-layout even-horizontal
 
 # Rather than constraining window size to the maximum size of any client
 # connected to the *session*, constrain window size to the maximum size of any
@@ -90,9 +102,13 @@ bind r source-file ~/.tmux.conf \; display-message 'Reloaded ~/.tmux.conf!'
 setw -g monitor-activity on
 set -g visual-activity off
 
-# Do not confirm on killing window
-bind-key & kill-window \; display-message 'Window killied!'
+# Kill winows and panes without confirmation
+bind-key X kill-window \; display-message 'Window killied!'
+bind-key x kill-pane \; display-message 'Pane killied!'
 
+# Make working with buffer like with vim buffer
+bind -t vi-copy 'v' begin-selection
+bind -t vi-copy 'y' copy-selection
 
 source-file ~/.dotfiles/tmux/statusline.conf
 
