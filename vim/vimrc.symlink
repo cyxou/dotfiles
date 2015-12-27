@@ -22,16 +22,22 @@ Plugin 'VundleVim/Vundle.vim'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-unimpaired'
-Plugin 'altercation/vim-colors-solarized'
+" Plugin 'altercation/vim-colors-solarized'
+Plugin 'chriskempson/base16-vim'
 Plugin 'pangloss/vim-javascript'
 Plugin 'bling/vim-airline'
 Plugin 'kien/ctrlp.vim'
 Plugin 'stephenmckinney/vim-solarized-powerline'
 Plugin 'scrooloose/syntastic'
-Plugin 'shougo/neocomplete.vim'
+Plugin 'valloric/YouCompleteMe'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'edkolev/tmuxline.vim'
 Plugin 'elzr/vim-json'
+Plugin 'raimondi/delimitMate'
+Plugin 'marijnh/tern_for_vim'
+Plugin 'junegunn/vim-easy-align'
+Plugin 'stephpy/vim-yaml'
+Plugin 'digitaltoad/vim-jade'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -49,13 +55,12 @@ filetype indent plugin on
 " see :h vundle for more details or wiki for FAQ
 " Put your non-Plugin stuff after this line
 syntax enable
-" set foldmethod=manual
+set foldmethod=syntax
 set background=dark
-colorscheme solarized
+colorscheme base16-eighties
 
 set number
 
-let mapleader = ","
 set ttimeoutlen=100
 
 " NerdTree style in Explorer mode
@@ -70,10 +75,9 @@ let g:airline#extensions#tmuxline#enabled = 1
 let g:airline_powerline_fonts = 1
 let g:airline_section_b = '%{strftime("%c")}'
 
-" Neocomplete
-let g:neocomplete#enable_at_startup = 1
-let g:neocomplete#enable_smart_case = 1
-let g:neocomlete#sources#syntax#min_keyword_length = 3
+" EasyAlign mappings
+xmap ga <Plug>(EasyAlign)
+nmap ga <Plug>(EasyAlign)
 
 " Few options that just makes things better
 set encoding=utf-8
@@ -92,6 +96,7 @@ set backspace=indent,eol,start
 set laststatus=2
 set relativenumber
 set undofile
+nnoremap <F7> :setlocal spell! spelllang=en_us<CR>
 
 nnoremap / /\v
 vnoremap / /\v
@@ -101,10 +106,30 @@ set gdefault
 set incsearch
 set showmatch
 set hlsearch
-nnoremap <leader><space> :noh<cr>
+
+" Leader mappings
+let mapleader = ","
+
+" quick save
+nnoremap <leader>w :update<CR>
+
+" open .vimrc file on the fly in seperate split
+nnoremap <leader>ev <C-w><C-v><C-l>:e $MYVIMRC<CR>
+
+" source .vimrc file
+nnoremap <leader>sv :so $MYVIMRC<CR>
+
+" remove highlighting from search results
+nnoremap <leader><space> :noh<CR>
+
+" toggle display of hidden symbols like tabs and trailing spaces
+nnoremap <leader>l :set invlist<CR>
+
+" delete buffer from current window substituting it with previous buffer
+nnoremap <leader>x :bp\|bd #<CR>
+
 nnoremap <tab> %
 vnoremap <tab> %
-nnoremap <leader>l :set invlist<CR>
 
 " The next section makes Vim handle long lines correctly:
 set wrap
@@ -122,7 +147,7 @@ set expandtab
 set listchars=tab:>·,trail:·
 
 " Split settings
-set splitright 
+set splitright
 nnoremap <C-h> <C-w>h
 nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
@@ -140,11 +165,12 @@ let g:ctrlp_custom_ignore = {
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
-set statusline+=%{fugitive#statusline()}
+"set statusline+=%{fugitive#statusline()}
 
-let g:syntastic_javascript_checkers = ['eslint']
+let g:syntastic_javascript_checkers = ['jscs', 'eslint']
 let g:syntastic_always_populate_loc_list=1
 let g:syntastic_check_on_open=1
+let g:Syntastic_enable_signs=1
 
 " Explore tweaking
 " from http://ivanvbrennan.nyc/blog/2014/01/16/rigging-vims-netrw
@@ -206,9 +232,30 @@ let g:vim_json_syntax_conceal = 0
 augroup json_autocmd
   autocmd!
   autocmd FileType json set autoindent
-  autocmd FileType json set formatoptions=tcq2l
+  autocmd FileType json set formatoptions=q2l
   autocmd FileType json set textwidth=78 shiftwidth=2
   autocmd FileType json set softtabstop=2 tabstop=8
   autocmd FileType json set expandtab
   "autocmd FileType json set foldmethod=syntax
 augroup END
+
+" Do not list netrw buffers
+autocmd FileType netrw setl bufhidden=delete
+
+" Append ; to end of the line and return to previous location
+imap <C-c> <CR><Esc>A;<Esc>O
+
+" Do not show Scratchpad for previewing code completion
+set completeopt-=preview
+
+" --- Strip trailing whitespace ---
+function! StripWhitespace ()
+    let save_cursor = getpos(".")
+    let old_query = getreg('/')
+    :%s/\s\+$//e
+    call setpos('.', save_cursor)
+    call setreg('/', old_query)
+endfunction
+
+" Trailing white space (strip spaces)
+noremap <leader>ss :call StripWhitespace()<CR>
