@@ -122,10 +122,13 @@ export PATH="/usr/local/heroku/bin:/home/alex/local/bin:/usr/local/sbin:/usr/loc
 # export SSH_KEY_PATH="~/.ssh/dsa_id"
 
 # Executing RHC Client Tool Commands from Any Directory
-export PATH=/var/lib/gems/1.8/bin:$PATH
+export PATH=~/.gem/ruby/2.3.0/bin:$PATH
 [[ -s "/home/alex/.gvm/scripts/gvm" ]] && source "/home/alex/.gvm/scripts/gvm"
 
 export NVM_DIR="/home/alex/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
 
 export EDITOR="vim"
+
+# This is needed for vieweing pictures in terminal with fim
+export FBFONT="/usr/share/kbd/consolefonts/ter-216n.psf.gz"
