@@ -26,7 +26,7 @@ Plugin 'tpope/vim-unimpaired'
 Plugin 'chriskempson/base16-vim'
 Plugin 'pangloss/vim-javascript'
 Plugin 'bling/vim-airline'
-Plugin 'kien/ctrlp.vim'
+Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'stephenmckinney/vim-solarized-powerline'
 Plugin 'scrooloose/syntastic'
 Plugin 'valloric/YouCompleteMe'
@@ -38,6 +38,10 @@ Plugin 'marijnh/tern_for_vim'
 Plugin 'junegunn/vim-easy-align'
 Plugin 'stephpy/vim-yaml'
 Plugin 'digitaltoad/vim-jade'
+Plugin 'vim-scripts/git-file.vim'
+Plugin 'sheerun/vim-polyglot'
+Plugin 'scrooloose/nerdcommenter'
+Plugin 'heavenshell/vim-jsdoc'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -65,6 +69,9 @@ set ttimeoutlen=100
 
 " NerdTree style in Explorer mode
 let g:netrw_liststyle=3
+
+" Hide vim's sw* files in netrw
+let g:netrw_list_hide= '.*\.swp$,.*\.un\~$'
 
 " Enable vim-airline
 let g:airline#extensions#tabline#enabled = 1
@@ -154,12 +161,28 @@ nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 
 " CtrlP - files matched are ignored when expanding wildcards
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/node_modules/*
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/node_modules/*,*/build/*
 let g:ctrlp_custom_ignore = {
       \ 'dir': '\v[\/]\.(git|hg|svn)$',
       \ 'file': '\v\.(exe|so|dll)$',
       \ 'link': 'some_bad_symbolic_links',
       \ }
+" Ignore files in .gitignore
+" let g:ctrlp_user_command = ['.git/', 'git --git-dir=%s/.git ls-files -oc --exclude-standard']
+
+" Close buffer via <C-x> using CtrlP
+let g:ctrlp_buffer_func = { 'enter': 'CtrlPMappings' }
+
+function! CtrlPMapping()
+  nnoremap <buffer> <silent> <C-x> :call <sid>DeleteBuffer()<cr>
+endfunction
+
+function! s:DeleteBuffer()
+  let path = fnamemodify(getline('.')[2:], ':p')
+  let bufn = matchstr(path, '\v\d+\ze\*No Name')
+  exec "bd" bufn ==# "" ? path : bufn
+  exec "norm \<F5>"
+endfunction
 
 " Syntastic tweaking
 set statusline+=%#warningmsg#
@@ -167,7 +190,7 @@ set statusline+=%{SyntasticStatuslineFlag()}
 set statusline+=%*
 "set statusline+=%{fugitive#statusline()}
 
-let g:syntastic_javascript_checkers = ['jscs', 'eslint']
+let g:syntastic_javascript_checkers = ['eslint', 'jscs']
 let g:syntastic_always_populate_loc_list=1
 let g:syntastic_check_on_open=1
 let g:Syntastic_enable_signs=1
@@ -229,6 +252,9 @@ au! BufRead,BufNewFile *.json set filetype=json
 au! BufRead,BufNewFile *.template set filetype=json
 let g:vim_json_syntax_conceal = 0
 
+" JsDoc syntax highlighting
+au! BufRead,BufNewFile *.jsdoc set syntax=javascript
+
 augroup json_autocmd
   autocmd!
   autocmd FileType json set autoindent
@@ -259,3 +285,32 @@ endfunction
 
 " Trailing white space (strip spaces)
 noremap <leader>ss :call StripWhitespace()<CR>
+
+" Copy and paste between Vim instances
+let g:session_yank_file="~/.vim_temp"
+map <silent> <Leader>y :call Session_yank()<CR>
+vmap <silent> <Leader>y y:call Session_yank()<CR>
+vmap <silent> <Leader>Y Y:call Session_yank()<CR>
+nmap <silent> <Leader>p :call Session_paste("p")<CR>
+nmap <silent> <Leader>P :call Session_paste("P")<CR>
+
+function Session_yank()
+  new
+  call setline(1,getregtype())
+  put
+  silent exec 'wq! ' . g:session_yank_file
+  exec 'bdelete ' . g:session_yank_file
+endfunction
+
+function Session_paste(command)
+  silent exec 'sview ' . g:session_yank_file
+  let l:opt=getline(1)
+  silent 2,$yank
+  if (l:opt == 'v')
+    call setreg('"', strpart(@",0,strlen(@")-1), l:opt) " strip trailing endline ?
+  else
+    call setreg('"', @", l:opt)
+  endif
+  exec 'bdelete ' . g:session_yank_file
+  exec 'normal ' . a:command
+endfunction
