@@ -31,9 +31,6 @@ set -g history-limit 10000
 
 setw -g mode-keys vi
 
-set -g utf8
-set-window-option -g utf8 on
-
 # Renumber windows automatically after removing a window
 set-option -g renumber-window on
 
