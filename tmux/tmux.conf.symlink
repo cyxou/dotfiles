@@ -42,6 +42,8 @@ bind-key Escape copy-mode
 # vim-like splitting of the window
 bind-key v split-window -h
 bind-key s split-window -v
+unbind '"'
+unbind '%'
 
 bind-key -r J resize-pane -D 5
 bind-key -r K resize-pane -U 5
@@ -83,6 +85,10 @@ bind -n M-Down select-pane -D
 bind -n S-Left  previous-window
 bind -n S-Right next-window
 
+# Moving between windows with vim movement keys
+bind -r C-h select-window -t :-
+bind -r C-l select-window -t :+
+
 # easily toggle synchronization (mnemonic: e is for echo)
 bind e setw synchronize-panes
 
@@ -101,8 +107,20 @@ bind-key X kill-window \; display-message 'Window killied!'
 bind-key x kill-pane \; display-message 'Pane killied!'
 
 # Make working with buffer like with vim buffer
+unbind p
+bind p paste-buffer
 bind -t vi-copy 'v' begin-selection
 bind -t vi-copy 'y' copy-selection
 
 source-file ~/.dotfiles/tmux/statusline.conf
 
+# List of plugins
+set -g @plugin 'tmux-plugins/tpm'
+set -g @plugin 'tmux-plugins/tmux-sensible'
+set -g @plugin 'tmux-plugins/tmux-resurrect'
+
+# Save vim sessions (requires tpope/vim-obsession plugin)
+set -g @resurrect-strategy-vim 'session'
+
+# Initialize TMUX plugin manager (keep this line at the very bottom of tmux.conf)
+run '~/.tmux/plugins/tpm/tpm'

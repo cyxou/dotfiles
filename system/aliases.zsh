@@ -15,6 +15,7 @@ alias pbpaste='xsel --clipboard --output'
 alias pbp='xsel --clipboard --output'
 alias wfon='rfkill unblock 0 && echo wifi turned on'
 alias wfoff='rfkill block 0 && echo wifi turned off'
+alias xc='xclip -selection clipboard'
 
 alias mongostart='mongod --dbpath ~/data/db'
 alias twstart='teamviewer --daemon start $$ teamviewer'
