@@ -8,6 +8,10 @@ bind-key -t vi-copy 'y' copy-pipe "xclip"
 bind C-c run "tmux save-buffer - | xclip -i -sel clipboard"
 bind C-v run "tmux set-buffer \"$(xclip -o -sel clipboard)\"; tmux paste-buffer"
 
+# Moving windows
+bind-key C-Left swap-window -t -1
+bind-key C-Right swap-window -t +1
+
 # 0 is too far from ` ;)
 set-option -g base-index 1
 set-window-option -g pane-base-index 1
@@ -118,6 +122,7 @@ source-file ~/.dotfiles/tmux/statusline.conf
 set -g @plugin 'tmux-plugins/tpm'
 set -g @plugin 'tmux-plugins/tmux-sensible'
 set -g @plugin 'tmux-plugins/tmux-resurrect'
+set -g @plugin 'tmux-plugins/tmux-copycat'
 
 # Save vim sessions (requires tpope/vim-obsession plugin)
 set -g @resurrect-strategy-vim 'session'
