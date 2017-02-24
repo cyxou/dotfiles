@@ -20,3 +20,5 @@ alias ns='npm start'
 
 alias mongostart='mongod --dbpath ~/data/db'
 alias twstart='teamviewer --daemon start $$ teamviewer'
+
+alias vims='vim -S'
