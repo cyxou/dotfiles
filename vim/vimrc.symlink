@@ -24,6 +24,7 @@ Plugin 'tpope/vim-surround'
 Plugin 'tpope/vim-unimpaired'
 Plugin 'tpope/vim-obsession'
 Plugin 'tpope/vim-eunuch'
+Plugin 'tpope/vim-repeat'
 " Plugin 'altercation/vim-colors-solarized'
 Plugin 'chriskempson/base16-vim'
 Plugin 'pangloss/vim-javascript'
@@ -32,11 +33,13 @@ Plugin 'vim-airline/vim-airline-themes'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'stephenmckinney/vim-solarized-powerline'
 Plugin 'scrooloose/syntastic'
-Plugin 'valloric/YouCompleteMe'
+"Plugin 'valloric/YouCompleteMe'
+"Plugin 'shougo/neocomplete.vim'
+Plugin 'ervandew/supertab'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'elzr/vim-json'
 Plugin 'raimondi/delimitMate'
-Plugin 'marijnh/tern_for_vim'
+Plugin 'ternjs/tern_for_vim'
 Plugin 'junegunn/vim-easy-align'
 Plugin 'stephpy/vim-yaml'
 Plugin 'digitaltoad/vim-jade'
@@ -170,6 +173,32 @@ nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 
+" >>>>>>>>>>>>>>>>>>>>>> Supertab settings
+let g:SuperTabDefaultCompletionType = "context"
+" Ternjs better support
+autocmd FileType javascript let g:SuperTabDefaultCompletionType = "context" 
+autocmd FileType javascript let g:SuperTabContextDefaultCompletionType = "<c-x><c-o>" 
+" <<<<<<<<<<<<<<<<<<<<<< Supertab settings
+
+" >>>>>>>>>>>>>>>>>>>>>> Neocomplete settings
+"let g:neocomplete#enable_at_startup = 1
+
+"" Use smartcase.
+"let g:neocomplete#enable_smart_case = 1
+
+"" Set minimum syntax keyword length.
+"let g:neocomplete#sources#syntax#min_keyword_length = 2
+
+"" <TAB>: completion.
+"inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
+
+"" Use head match instead of default fuzzy match.
+"let g:neocomplete#enable_fuzzy_completion = 0
+" <<<<<<<<<<<<<<<<<<<<<< Neocomplete settings
+
+" >>>>>>>>>>>>>>>>>>>>>> CtrlP settings
+let g:ctrlp_cmd = 'CtrlPBuffer'
+
 " CtrlP - files matched are ignored when expanding wildcards
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/node_modules/*,*/build/*
 let g:ctrlp_custom_ignore = {
@@ -193,6 +222,7 @@ function! s:DeleteBuffer()
   exec "bd" bufn ==# "" ? path : bufn
   exec "norm \<F5>"
 endfunction
+" <<<<<<<<<<<<<<<<<<<<<< CtrlP settings
 
 " Syntastic tweaking
 set statusline+=%#warningmsg#
@@ -327,6 +357,7 @@ function Session_paste(command)
 endfunction
 
 " Tern settings
+
 let g:tern_show_argument_hints='on_hold'
 " and
 let g:tern_map_keys=2
