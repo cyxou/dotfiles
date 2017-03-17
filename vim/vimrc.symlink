@@ -1,5 +1,6 @@
 set nocompatible              " be iMproved, required
 set clipboard=unnamed
+set backupcopy=yes " this lets webpack dev server to watch for changes in files
 "set nobackup
 "set nowritebackup
 "set noswapfile
@@ -33,9 +34,9 @@ Plugin 'vim-airline/vim-airline-themes'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'stephenmckinney/vim-solarized-powerline'
 Plugin 'scrooloose/syntastic'
-"Plugin 'valloric/YouCompleteMe'
+Plugin 'valloric/YouCompleteMe'
 "Plugin 'shougo/neocomplete.vim'
-Plugin 'ervandew/supertab'
+"Plugin 'ervandew/supertab'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'elzr/vim-json'
 Plugin 'raimondi/delimitMate'
@@ -335,7 +336,7 @@ vmap <silent> <Leader>Y Y:call Session_yank()<CR>
 nmap <silent> <Leader>p :call Session_paste("p")<CR>
 nmap <silent> <Leader>P :call Session_paste("P")<CR>
 
-function Session_yank()
+function! Session_yank()
   new
   call setline(1,getregtype())
   put
@@ -343,7 +344,7 @@ function Session_yank()
   exec 'bdelete ' . g:session_yank_file
 endfunction
 
-function Session_paste(command)
+function! Session_paste(command)
   silent exec 'sview ' . g:session_yank_file
   let l:opt=getline(1)
   silent 2,$yank
@@ -367,3 +368,6 @@ set pastetoggle=<F2>
 
 " Increase vim-gutter number of signs
 let g:gitgutter_max_signs = 2000
+
+" NERDCommenter settings
+let g:NERDCustomDelimiters = { 'javascript.jsx': { 'left': '//', 'leftAlt': '/*', 'rightAlt': '*/' }}
