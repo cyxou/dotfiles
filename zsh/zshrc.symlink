@@ -132,3 +132,11 @@ export EDITOR="vim"
 
 # This is needed for vieweing pictures in terminal with fim
 export FBFONT="/usr/share/kbd/consolefonts/ter-216n.psf.gz"
+
+# Activate vi binding
+bindkey -v
+bindkey "^R" history-incremental-search-backward
+bindkey "^S" history-incremental-search-forward
+bindkey "^U" kill-whole-line
+bindkey "^Q" push-line
+bindkey -M viins '\e.' insert-last-word
