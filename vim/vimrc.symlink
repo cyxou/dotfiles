@@ -143,6 +143,10 @@ nnoremap <leader>l :set invlist<CR>
 " delete buffer from current window substituting it with previous buffer
 nnoremap <leader>x :bp\|bd #<CR>
 
+" Gstatus
+nnoremap <leader>gs :Gstatus<CR>
+
+
 nnoremap <tab> %
 vnoremap <tab> %
 
@@ -198,7 +202,8 @@ autocmd FileType javascript let g:SuperTabContextDefaultCompletionType = "<c-x><
 " <<<<<<<<<<<<<<<<<<<<<< Neocomplete settings
 
 " >>>>>>>>>>>>>>>>>>>>>> CtrlP settings
-let g:ctrlp_cmd = 'CtrlPBuffer'
+"let g:ctrlp_cmd = 'CtrlPBuffer'
+let g:ctrlp_cmd = 'CtrlP'
 
 " CtrlP - files matched are ignored when expanding wildcards
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/node_modules/*,*/build/*
