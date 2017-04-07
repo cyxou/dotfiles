@@ -26,7 +26,6 @@ Plugin 'tpope/vim-unimpaired'
 Plugin 'tpope/vim-obsession'
 Plugin 'tpope/vim-eunuch'
 Plugin 'tpope/vim-repeat'
-" Plugin 'altercation/vim-colors-solarized'
 Plugin 'chriskempson/base16-vim'
 Plugin 'pangloss/vim-javascript'
 Plugin 'vim-airline/vim-airline'
@@ -35,8 +34,6 @@ Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'stephenmckinney/vim-solarized-powerline'
 Plugin 'scrooloose/syntastic'
 Plugin 'valloric/YouCompleteMe'
-"Plugin 'shougo/neocomplete.vim'
-"Plugin 'ervandew/supertab'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'elzr/vim-json'
 Plugin 'raimondi/delimitMate'
@@ -49,6 +46,7 @@ Plugin 'sheerun/vim-polyglot'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'heavenshell/vim-jsdoc'
 Plugin 'craigemery/vim-autotag'
+Plugin 'editorconfig/editorconfig-vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -74,15 +72,9 @@ set number
 
 set ttimeoutlen=100
 
-" NerdTree style in Explorer mode
-let g:netrw_liststyle=3
-
-" Hide vim's sw* files in netrw
-let g:netrw_list_hide= '.*\.swp$,.*\.un\~$'
-
 " Enable vim-airline
 let g:airline#extensions#tabline#enabled = 1
-let g:airline_theme='base16_ocean'
+let g:airline_theme='base16_oceanicnext'
 
 " Enable tmux-airline
 let g:airline#extensions#tmuxline#enabled = 1
@@ -169,7 +161,7 @@ set softtabstop=2
 set expandtab
 
 " Highlight hidden characters
-set listchars=tab:>·,trail:·
+set listchars=tab:>·,trail:~,space:·,eol:¬
 
 " Split settings
 set splitright
@@ -181,8 +173,8 @@ nnoremap <C-l> <C-w>l
 " >>>>>>>>>>>>>>>>>>>>>> Supertab settings
 let g:SuperTabDefaultCompletionType = "context"
 " Ternjs better support
-autocmd FileType javascript let g:SuperTabDefaultCompletionType = "context" 
-autocmd FileType javascript let g:SuperTabContextDefaultCompletionType = "<c-x><c-o>" 
+autocmd FileType javascript let g:SuperTabDefaultCompletionType = "context"
+autocmd FileType javascript let g:SuperTabContextDefaultCompletionType = "<c-x><c-o>"
 " <<<<<<<<<<<<<<<<<<<<<< Supertab settings
 
 " >>>>>>>>>>>>>>>>>>>>>> Neocomplete settings
@@ -243,6 +235,14 @@ let g:syntastic_check_on_open=1
 let g:Syntastic_enable_signs=1
 
 " Explore tweaking
+let g:netrw_banner = 0
+
+" NerdTree style in Explorer mode
+let g:netrw_liststyle=3
+
+" Hide vim's sw* files in netrw
+let g:netrw_list_hide= '.*\.swp$,.*\.un\~$'
+
 " from http://ivanvbrennan.nyc/blog/2014/01/16/rigging-vims-netrw
 fun! VexToggle(dir)
   if exists("t:vex_buf_nr")
@@ -254,7 +254,7 @@ endf
 
 fun! VexOpen(dir)
   let g:netrw_browse_split=4 "Open files in previous window
-  let vex_width = 25
+  let vex_width = 30
 
   execute "Vexplore " . a:dir
   let t:vex_buf_nr = bufnr("%")
@@ -376,3 +376,7 @@ let g:gitgutter_max_signs = 2000
 
 " NERDCommenter settings
 let g:NERDCustomDelimiters = { 'javascript.jsx': { 'left': '//', 'leftAlt': '/*', 'rightAlt': '*/' }}
+
+" EditorConfig plugin settings
+" Ensure that this plugin works well with Tim Pope's fugitive and avoid loading EditorConfig for any remote files over ssh:
+let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
