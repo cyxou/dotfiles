@@ -3,8 +3,12 @@
 #
 
 # Clipboard (Linux)
-bind-key -t vi-copy 'v' begin-selection
-bind-key -t vi-copy 'y' copy-pipe "xclip"
+unbind p
+bind p paste-buffer
+bind-key -T copy-mode-vi 'v' send -X begin-selection
+bind-key -T copy-mode-vi 'y' send -X copy-selection
+#bind-key -T vi-copy 'v' begin-selection
+#bind-key -T vi-copy 'y' copy-pipe "xclip"
 bind C-c run "tmux save-buffer - | xclip -i -sel clipboard"
 bind C-v run "tmux set-buffer \"$(xclip -o -sel clipboard)\"; tmux paste-buffer"
 
@@ -109,12 +113,6 @@ set -g visual-activity off
 # Kill winows and panes without confirmation
 bind-key X kill-window \; display-message 'Window killied!'
 bind-key x kill-pane \; display-message 'Pane killied!'
-
-# Make working with buffer like with vim buffer
-unbind p
-bind p paste-buffer
-bind -t vi-copy 'v' begin-selection
-bind -t vi-copy 'y' copy-selection
 
 source-file ~/.dotfiles/tmux/statusline.conf
 
