@@ -20,10 +20,10 @@ URxvt.intensityStyles:      false
 
 ! Fonts
 URxvt.allow_bold:           bold
-URxvt.font:                 xft:Hack:size=10:pixelsize:20
-URxvt.boldFont:             xft:Hack:bold:size=10:pixelsize=20
-URxvt.italicFont:           xft:Hack:italic:size=10:pixelsize=20
-URxvt.boldItalicFont:       xft:Hack:bold:italic:size=10:pixelsize=20
+URxvt.font:                 xft:SauceCodePro Nerd Font:size=11:style=Regular
+URxvt.boldFont:             xft:SauceCodePro Nerd Font:size=11:style=Bold
+!URxvt.italicFont:           xft:Hack:italic:size=10:pixelsize=20
+!URxvt.boldItalicFont:       xft:Hack:bold:italic:size=10:pixelsize=20
 
 ! Fix font space
 URxvt*letterSpace: -1
