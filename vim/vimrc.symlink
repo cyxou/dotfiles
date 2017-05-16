@@ -208,7 +208,7 @@ autocmd FileType javascript let g:SuperTabContextDefaultCompletionType = "<c-x><
 let g:ctrlp_cmd = 'CtrlP'
 
 " CtrlP - files matched are ignored when expanding wildcards
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/node_modules/*,*/build/*
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/node_modules/*,*/build/*,*/dist/*
 let g:ctrlp_custom_ignore = {
       \ 'dir': '\v[\/]\.(git|hg|svn)$',
       \ 'file': '\v\.(exe|so|dll)$',
@@ -312,6 +312,10 @@ let g:vim_json_syntax_conceal = 0
 
 " JsDoc syntax highlighting
 au! BufRead,BufNewFile *.jsdoc set syntax=javascript
+
+" Autodelete fugitive hidden buffers
+au! BufReadPost fugitive://* set bufhidden=delete
+set diffopt+=vertical
 
 augroup json_autocmd
   autocmd!
