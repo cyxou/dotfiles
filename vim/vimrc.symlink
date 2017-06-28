@@ -359,6 +359,10 @@ vmap <silent> <Leader>Y Y:call Session_yank()<CR>
 nmap <silent> <Leader>p :call Session_paste("p")<CR>
 nmap <silent> <Leader>P :call Session_paste("P")<CR>
 
+" Copy selection to xclip 
+vmap "*y :!xclip -f -sel clip
+map "*p :r!xclip -o -sel clip
+
 function! Session_yank()
   new
   call setline(1,getregtype())
