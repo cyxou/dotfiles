@@ -2,6 +2,9 @@
 # Setup tmux
 #
 
+# This is needed to display italic comments in tmux sessions
+set-option -g default-terminal "tmux"
+
 # Clipboard (Linux)
 unbind p
 bind p paste-buffer
