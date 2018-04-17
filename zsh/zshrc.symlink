@@ -175,3 +175,13 @@ bindkey -M viins '\e.' insert-last-word
 
 BASE16_SHELL=$HOME/.config/base16-shell/
 [ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
+
+export TERM=tmux-256color-italic
+
+# Enable kops autocompletion
+[ -s "$HOME/kops_completion.sh" ] && . "$HOME/kops_completion.sh"  # This loads kops completion
+
+# Enable kubect autocompletion mapped to the `k` alias
+if [ $commands[kubectl] ]; then
+  source <(kubectl completion zsh | sed 's/kubectl/k/g')
+fi
