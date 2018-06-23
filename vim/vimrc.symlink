@@ -12,6 +12,7 @@ filetype off                  " required
 set modelines=1
 
 " set the runtime path to include Vundle and initialize
+let g:vundle_default_git_proto = 'git'
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
@@ -41,10 +42,10 @@ Plugin 'scrooloose/syntastic'
 Plugin 'sheerun/vim-polyglot'
 Plugin 'sirver/ultisnips'
 Plugin 'honza/vim-snippets'
-Plugin 'stephenmckinney/vim-solarized-powerline'
+"Plugin 'stephenmckinney/vim-solarized-powerline'
 Plugin 'stephpy/vim-yaml'
 Plugin 'ternjs/tern_for_vim'
-Plugin 'tpope/vim-abolish.git'
+Plugin 'tpope/vim-abolish'
 Plugin 'tpope/vim-eunuch'
 Plugin 'tpope/vim-fugitive'
 Plugin 'tpope/vim-obsession'
@@ -75,6 +76,7 @@ filetype indent plugin on
 syntax enable
 set foldmethod=syntax
 set background=dark
+"colorscheme solarized
 " Set shell colors to make it work with urxvt and termite
 " More info at https://github.com/chriskempson/base16-shell
 if filereadable(expand("~/.vimrc_background"))
@@ -118,8 +120,8 @@ set relativenumber
 set undofile
 nnoremap <F7> :setlocal spell! spelllang=en_us<CR>
 
-nnoremap / /\v
-vnoremap / /\v
+"nnoremap / /\v
+"vnoremap / /\v
 set ignorecase
 set smartcase
 set gdefault
@@ -211,7 +213,7 @@ autocmd FileType javascript let g:SuperTabContextDefaultCompletionType = "<c-x><
 let g:ctrlp_cmd = 'CtrlP'
 
 " CtrlP - files matched are ignored when expanding wildcards
-set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/node_modules/*,*/build/*,*/dist/*
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*/node_modules/*,*/build/*,*/dist/*,*/coverage/*
 let g:ctrlp_custom_ignore = {
       \ 'dir': '\v[\/]\.(git|hg|svn)$',
       \ 'file': '\v\.(exe|so|dll)$',
@@ -405,7 +407,7 @@ let g:NERDCustomDelimiters = { 'javascript.jsx': { 'left': '//', 'leftAlt': '/*'
 let g:EditorConfig_exclude_patterns = ['fugitive://.*', 'scp://.*']
 
 " Ack tweaking
-nnoremap <Leader>a :Ack!<Space>
+nnoremap <Leader>a :Ack! --ignore-dir=coverage --ignore-dir=build --ignore-dir=public<Space>
 
 " UltiSnips config
 " Trigger configuration. Do not use <tab> if you use https://github.com/Valloric/YouCompleteMe.
@@ -424,3 +426,8 @@ vnoremap <silent> # :<C-U>
   \gvy?<C-R><C-R>=substitute(
   \escape(@", '?\.*$^~['), '\_s\+', '\\_s\\+', 'g')<CR><CR>
   \gV:call setreg('"', old_reg, old_regtype)<CR>
+
+" Make comments italic
+highlight Comment cterm=italic
+set t_ZH=[3m
+set t_XR=[23m
