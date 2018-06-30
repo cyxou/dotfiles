@@ -17,6 +17,7 @@ alias wfon='rfkill unblock 0 && echo wifi turned on'
 alias wfoff='rfkill block 0 && echo wifi turned off'
 alias xc='xclip -selection clipboard'
 alias ns='npm start'
+alias nst='npm stop'
 
 alias mongostart='mongod --dbpath ~/data/db'
 alias twstart='teamviewer --daemon start $$ teamviewer'
